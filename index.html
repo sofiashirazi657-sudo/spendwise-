@@ -69,7 +69,7 @@
   </section>
   <section class="page" id="assistant">
     <div class="top"><div><div class="eyebrow">Understand your habits</div><h1 class="h1">Money assistant</h1><p class="sub">Ask questions about the expenses you've recorded.</p></div></div>
-    <div class="card assistant-box"><div class="messages" id="messages"><div class="bubble">Hi! I can help you explore the spending data you've entered. Try asking “Which category have I spent the most on?” or “How much budget do I have left?”</div></div><form class="ask" id="askForm"><input id="question" placeholder="Ask about your spending..." autocomplete="off" required><button class="btn">Ask</button></form><p class="notice">This first prototype uses transparent, local calculations and predefined question patterns. It does not send your financial data to an external AI model.</p></div>
+    <div class="card assistant-box"><div class="messages" id="messages"><div class="bubble">Hi! I'm your SPENDWISE assistant. Ask me about your monthly budget, recorded spending, categories or savings ideas.</div></div><form class="ask" id="askForm"><input id="question" placeholder="Ask about your spending..." autocomplete="off" required><button class="btn">Ask</button></form><p class="notice">I use the expenses and budget you enter in this browser to calculate simple spending summaries. Do not enter bank details, card numbers, passwords, or other sensitive information. These summaries are educational, not professional financial advice.</p></div>
   </section>
 </main>
 </div>
@@ -105,8 +105,48 @@ $('date').value=today.toISOString().slice(0,10);
 $('expenseForm').addEventListener('submit',e=>{e.preventDefault();const amount=Number($('amount').value);if(!(amount>0))return;transactions.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),description:$('description').value.trim(),amount,category:$('category').value,date:$('date').value});e.target.reset();$('date').value=today.toISOString().slice(0,10);save();showPage('transactions')});
 $('budgetForm').addEventListener('submit',e=>{e.preventDefault();const n=Number($('budgetInput').value);if(n>0){budget=n;save();showPage('budgets')}});
 $('clearAll').addEventListener('click',()=>{if(confirm('Delete all recorded expenses from this browser?')){transactions=[];save()}});
-function answer(q){const s=q.toLowerCase(),tx=monthTx(),cats=grouped(),spent=sum(tx);if(/most|biggest|highest|largest|category/.test(s)&&cats.length)return `Your largest recorded spending category this month is ${cats[0][0]} at ${money(cats[0][1])}. That's ${Math.round(cats[0][1]/spent*100)}% of your recorded spending.`;if(/left|remaining|budget/.test(s))return `You've recorded ${money(spent)} in spending against a ${money(budget)} monthly budget. ${budget-spent>=0?money(budget-spent)+' remains.':'You are '+money(spent-budget)+' over the limit.'}`;if(/total|spent|spending/.test(s))return `Your recorded spending this month totals ${money(spent)} across ${tx.length} transactions.`;if(/average/.test(s))return tx.length?`Your average recorded transaction is ${money(spent/tx.length)}.`:'Add some expenses first so I can calculate an average.';if(/save|saving|reduce|cut/.test(s))return cats.length?`Your largest category is ${cats[0][0]}. You could review those purchases and set a realistic limit. For example, a 10% reduction in that category would equal ${money(cats[0][1]*.1)} based on this month's entries.`:'Add expenses first, then I can help identify categories to review.';return 'I can currently answer questions about your total spending, largest category, average transaction and remaining budget. Try asking “Which category is highest?”';}
-$('askForm').addEventListener('submit',e=>{e.preventDefault();const q=$('question').value.trim();if(!q)return;const box=$('messages');box.insertAdjacentHTML('beforeend',`<div class="bubble user">${esc(q)}</div><div class="bubble">${esc(answer(q))}</div>`);$('question').value='';box.scrollTop=box.scrollHeight});
+
+// Local SPENDWISE assistant: no API, external server, or key required.
+function answerLocally(question){
+  const q=question.toLowerCase();
+  const tx=monthTx();
+  const spent=sum(tx);
+  const left=budget-spent;
+  const cats=grouped();
+
+  if(/\bbudget\b/.test(q) && !/left|remaining|remain|available|over/.test(q)){
+    return `Your monthly budget is ${money(budget)}. You've recorded ${money(spent)} in expenses this month, so ${left>=0?money(left)+' remains.':'you are '+money(-left)+' over your budget.'}`;
+  }
+  if(/left|remaining|remain|available|over budget/.test(q)){
+    return `Your monthly budget is ${money(budget)} and your recorded spending is ${money(spent)}. ${left>=0?money(left)+' remains for this month.':'You are '+money(-left)+' over your monthly budget.'}`;
+  }
+  if(/most|biggest|highest|largest|category/.test(q)){
+    if(!cats.length)return 'You have not entered any expenses this month yet. Add a few transactions and I can identify your largest category.';
+    return `Your largest recorded spending category this month is ${cats[0][0]} at ${money(cats[0][1])}, which is ${spent?Math.round(cats[0][1]/spent*100):0}% of your recorded spending.`;
+  }
+  if(/average/.test(q)){
+    return tx.length?`Your average recorded expense this month is ${money(spent/tx.length)} across ${tx.length} transactions.`:'Add some expenses first so I can calculate an average.';
+  }
+  if(/total|spent|spending/.test(q)){
+    return `Your recorded spending this month totals ${money(spent)} across ${tx.length} transactions. Your monthly budget is ${money(budget)}.`;
+  }
+  if(/save|saving|reduce|cut/.test(q)){
+    if(!cats.length)return 'Add a few expenses first, then I can help identify categories you may want to review.';
+    return `Your largest category is ${cats[0][0]} at ${money(cats[0][1])}. You could review those purchases and decide whether a small, realistic adjustment makes sense. A 10% change would equal ${money(cats[0][1]*0.1)} based on this month's entries.`;
+  }
+  return `Your monthly budget is ${money(budget)} and you've recorded ${money(spent)} in spending this month. Try asking “How much budget do I have left?”, “Which category is highest?” or “What's my total spending?”`;
+}
+
+$('askForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const q=$('question').value.trim();
+  if(!q)return;
+  const box=$('messages');
+  box.insertAdjacentHTML('beforeend',`<div class="bubble user">${esc(q)}</div><div class="bubble">${esc(answerLocally(q))}</div>`);
+  $('question').value='';
+  box.scrollTop=box.scrollHeight;
+});
+
 render();
 </script>
 </body>
