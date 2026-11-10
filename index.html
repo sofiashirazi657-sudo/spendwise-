@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spendwise — Understand your money</title>
+<style>
+:root{--navy:#142b38;--green:#2f806b;--mint:#e7f2ed;--cream:#f7f7f2;--ink:#1e2c32;--muted:#718087;--line:#e5e9e5;--white:#fff;--red:#b95353;--gold:#bd8a35;--shadow:0 10px 30px rgba(25,48,55,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}button,input,select{font:inherit}button{cursor:pointer}.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}.side{background:var(--navy);color:#fff;padding:28px 18px;display:flex;flex-direction:column;gap:30px}.brand{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:800;letter-spacing:-.7px;padding:0 10px}.logo{width:34px;height:34px;border-radius:11px;background:#a8d3bd;color:var(--navy);display:grid;place-items:center;font-weight:900}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:#c4d1d2;text-align:left;padding:12px 14px;border-radius:11px;font-weight:600}.nav button.active,.nav button:hover{background:#254553;color:#fff}.side-note{margin-top:auto;color:#b5c7c8;font-size:12px;padding:12px}.main{padding:34px clamp(18px,4vw,54px);max-width:1500px;width:100%;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:var(--green);font-weight:800}.h1{font-size:clamp(26px,3vw,36px);letter-spacing:-1.2px;margin:4px 0}.sub{color:var(--muted);margin:0}.date-pill{background:#fff;border:1px solid var(--line);border-radius:99px;padding:9px 14px;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.card{background:var(--white);border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:var(--shadow)}.metric-label{font-size:13px;color:var(--muted);font-weight:600}.metric{font-size:28px;letter-spacing:-1px;font-weight:800;margin:8px 0 3px}.metric-foot{font-size:12px;color:var(--muted)}.metric-icon{float:right;width:35px;height:35px;border-radius:11px;background:var(--mint);display:grid;place-items:center;color:var(--green);font-size:17px}.section-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:17px}.card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}.card h2{font-size:16px;margin:0;letter-spacing:-.3px}.muted{color:var(--muted);font-size:13px}.btn{border:0;border-radius:10px;background:var(--green);color:white;padding:10px 14px;font-weight:700}.btn:hover{filter:brightness(.94)}.btn.secondary{background:var(--mint);color:var(--green)}.btn.ghost{background:#f2f5f2;color:var(--ink)}.chart{height:190px;display:flex;align-items:end;gap:10px;padding:15px 4px 0;border-bottom:1px solid var(--line)}.bar-wrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:7px;min-width:0}.bar{width:min(34px,70%);background:#9dc9b4;border-radius:7px 7px 2px 2px;min-height:3px;position:relative}.bar.current{background:var(--green)}.bar-label{font-size:11px;color:var(--muted)}.legend{display:flex;gap:14px;margin-top:12px;font-size:11px;color:var(--muted)}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:5px}.category-list{display:grid;gap:15px}.cat-row{display:grid;grid-template-columns:110px 1fr 65px;gap:10px;align-items:center;font-size:13px}.track{height:8px;background:#edf1ed;border-radius:99px;overflow:hidden}.fill{height:100%;background:#75a991;border-radius:99px}.cat-amount{text-align:right;font-weight:700}.insight{background:#f0f7f2;border:1px solid #dcebe1;border-radius:13px;padding:14px;margin-top:15px}.insight strong{display:block;font-size:13px;margin-bottom:4px}.insight p{font-size:13px;color:#52665d;margin:0}.table{width:100%;border-collapse:collapse}.table th{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.7px;padding:10px 8px;border-bottom:1px solid var(--line)}.table td{padding:13px 8px;border-bottom:1px solid #eef0ed;font-size:13px}.amount{font-weight:800;text-align:right}.tag{display:inline-block;border-radius:99px;padding:4px 8px;background:#eff5f0;color:#49705e;font-size:11px}.delete{border:0;background:transparent;color:#a0a9a7;font-size:17px}.delete:hover{color:var(--red)}.page{display:none}.page.active{display:block}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:grid;gap:6px}.field label{font-size:12px;font-weight:700;color:#5e6c70}.field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff;color:var(--ink);outline:none}.field input:focus,.field select:focus{border-color:var(--green);box-shadow:0 0 0 3px #e5f1eb}.form-actions{display:flex;gap:9px;margin-top:16px}.empty{text-align:center;padding:28px;color:var(--muted)}.budget-row{margin:18px 0}.budget-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:7px}.budget-track{height:11px;border-radius:99px;background:#edf1ed;overflow:hidden}.budget-track span{display:block;height:100%;background:var(--green);border-radius:99px}.assistant-box{min-height:300px;display:flex;flex-direction:column}.messages{display:grid;gap:12px;margin:10px 0 18px}.bubble{max-width:85%;padding:12px 14px;border-radius:14px;background:#f0f4f1;font-size:13px}.bubble.user{margin-left:auto;background:var(--navy);color:#fff}.ask{display:flex;gap:8px;margin-top:auto}.ask input{flex:1;min-width:0;border:1px solid var(--line);border-radius:11px;padding:12px}.notice{font-size:11px;color:var(--muted);margin-top:12px}.mobile-brand{display:none}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.section-grid{grid-template-columns:1fr}.app{grid-template-columns:190px 1fr}.side{padding:22px 12px}}
+@media(max-width:620px){.app{display:block}.side{padding:12px 14px;gap:12px}.brand{padding:0 5px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:9px 11px;font-size:12px}.side-note{display:none}.main{padding:22px 14px}.top{align-items:flex-start}.date-pill{display:none}.grid{gap:9px}.card{padding:14px}.metric{font-size:23px}.section-grid{gap:10px}.form-grid{grid-template-columns:1fr}.cat-row{grid-template-columns:90px 1fr 58px}.table th:nth-child(3),.table td:nth-child(3){display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="brand"><span class="logo">S</span> spendwise</div>
+  <nav class="nav" aria-label="Main navigation">
+    <button class="active" data-page="dashboard">▦ &nbsp; Overview</button>
+    <button data-page="transactions">↔ &nbsp; Transactions</button>
+    <button data-page="budgets">◷ &nbsp; Budgets</button>
+    <button data-page="assistant">✧ &nbsp; Money assistant</button>
+  </nav>
+  <div class="side-note">Small steps. Clearer money decisions.<br><br><span style="opacity:.7">Your data stays in this browser.</span></div>
+</aside>
+<main class="main">
+  <section class="page active" id="dashboard">
+    <div class="top"><div><div class="eyebrow">Your money, made clearer</div><h1 class="h1">Good to see you.</h1><p class="sub">Here's a snapshot of your spending.</p></div><div class="date-pill" id="today"></div></div>
+    <div class="grid">
+      <div class="card"><span class="metric-icon">↗</span><div class="metric-label">Total spent this month</div><div class="metric" id="totalSpent">$0.00</div><div class="metric-foot">Based on your transactions</div></div>
+      <div class="card"><span class="metric-icon">◎</span><div class="metric-label">Monthly budget</div><div class="metric" id="totalBudget">$1,000</div><div class="metric-foot">Your planned spending limit</div></div>
+      <div class="card"><span class="metric-icon">⌁</span><div class="metric-label">Budget remaining</div><div class="metric" id="remaining">$1,000</div><div class="metric-foot" id="remainingFoot">Available to spend</div></div>
+      <div class="card"><span class="metric-icon">＋</span><div class="metric-label">Transactions</div><div class="metric" id="count">0</div><div class="metric-foot">This month</div></div>
+    </div>
+    <div class="section-grid">
+      <div class="card"><div class="card-head"><div><h2>Spending over time</h2><div class="muted">Daily totals this month</div></div><button class="btn secondary" onclick="showPage('transactions')">+ Add expense</button></div><div class="chart" id="dailyChart"></div><div class="legend"><span><i class="dot"></i>Daily spending</span></div></div>
+      <div class="card"><div class="card-head"><div><h2>Where your money goes</h2><div class="muted">This month's categories</div></div></div><div class="category-list" id="categories"></div></div>
+    </div>
+    <div class="section-grid">
+      <div class="card"><div class="card-head"><h2>Recent transactions</h2><button class="btn ghost" onclick="showPage('transactions')">View all</button></div><div id="recent"></div></div>
+      <div class="card"><div class="card-head"><h2>Spendwise insights</h2><span class="tag">Auto-generated</span></div><div id="insights"></div><p class="notice">Insights are generated from the transactions you enter. They are educational prompts, not professional financial advice.</p></div>
+    </div>
+  </section>
+  <section class="page" id="transactions">
+    <div class="top"><div><div class="eyebrow">Keep track</div><h1 class="h1">Transactions</h1><p class="sub">Add and review your everyday spending.</p></div></div>
+    <div class="section-grid">
+      <div class="card"><div class="card-head"><h2>Add an expense</h2></div>
+        <form id="expenseForm">
+          <div class="form-grid">
+            <div class="field"><label for="description">What did you spend on?</label><input id="description" required maxlength="70" placeholder="e.g. Lunch with friends"></div>
+            <div class="field"><label for="amount">Amount ($)</label><input id="amount" type="number" min=".01" step=".01" required placeholder="12.50"></div>
+            <div class="field"><label for="category">Category</label><select id="category"><option>Food & dining</option><option>Shopping</option><option>Transport</option><option>Entertainment</option><option>Education</option><option>Bills</option><option>Health</option><option>Other</option></select></div>
+            <div class="field"><label for="date">Date</label><input id="date" type="date" required></div>
+          </div>
+          <div class="form-actions"><button class="btn" type="submit">Save expense</button><button class="btn ghost" type="reset">Clear</button></div>
+        </form>
+      </div>
+      <div class="card"><div class="card-head"><h2>Quick tip</h2></div><p class="sub">Record purchases as you make them. A few accurate entries are more useful than trying to remember everything at the end of the month.</p><div class="insight"><strong>Privacy by design</strong><p>This prototype stores entries in your browser using local storage. Don't enter bank logins, card numbers or other sensitive details.</p></div></div>
+    </div>
+    <div class="card" style="margin-top:17px"><div class="card-head"><h2>All transactions</h2><button class="btn ghost" id="clearAll">Clear all</button></div><div id="allTransactions"></div></div>
+  </section>
+  <section class="page" id="budgets">
+    <div class="top"><div><div class="eyebrow">Plan ahead</div><h1 class="h1">Your budget</h1><p class="sub">Set a monthly limit and see how your spending compares.</p></div></div>
+    <div class="section-grid">
+      <div class="card"><div class="card-head"><h2>Monthly spending limit</h2></div><form id="budgetForm"><div class="field"><label for="budgetInput">Total monthly budget ($)</label><input id="budgetInput" type="number" min="1" step=".01" required></div><div class="form-actions"><button class="btn">Update budget</button></div></form></div>
+      <div class="card"><div class="card-head"><h2>Budget progress</h2></div><div class="metric" id="budgetProgress">$0</div><div class="muted" id="budgetCaption">spent so far</div><div class="budget-track" style="margin-top:14px"><span id="budgetBar" style="width:0%"></span></div></div>
+    </div>
+    <div class="card" style="margin-top:17px"><div class="card-head"><h2>Category budgets</h2><span class="muted">Suggested view of actual spending</span></div><div id="budgetCategories"></div><p class="notice">Category amounts show recorded spending. The prototype currently uses one overall monthly budget.</p></div>
+  </section>
+  <section class="page" id="assistant">
+    <div class="top"><div><div class="eyebrow">Understand your habits</div><h1 class="h1">Money assistant</h1><p class="sub">Ask questions about the expenses you've recorded.</p></div></div>
+    <div class="card assistant-box"><div class="messages" id="messages"><div class="bubble">Hi! I can help you explore the spending data you've entered. Try asking “Which category have I spent the most on?” or “How much budget do I have left?”</div></div><form class="ask" id="askForm"><input id="question" placeholder="Ask about your spending..." autocomplete="off" required><button class="btn">Ask</button></form><p class="notice">This first prototype uses transparent, local calculations and predefined question patterns. It does not send your financial data to an external AI model.</p></div>
+  </section>
+</main>
+</div>
+<script>
+const KEY='spendwise_transactions_v1', BKEY='spendwise_budget_v1';
+let transactions=JSON.parse(localStorage.getItem(KEY)||'[]');
+let budget=Number(localStorage.getItem(BKEY)||1000);
+const $=id=>document.getElementById(id);
+const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n||0);
+const today=new Date(); const monthStart=new Date(today.getFullYear(),today.getMonth(),1);
+const monthTx=()=>transactions.filter(t=>{const d=new Date(t.date+'T12:00:00');return d.getMonth()===today.getMonth()&&d.getFullYear()===today.getFullYear()});
+const sum=arr=>arr.reduce((a,t)=>a+Number(t.amount),0);
+function save(){localStorage.setItem(KEY,JSON.stringify(transactions));localStorage.setItem(BKEY,String(budget));render()}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function grouped(){const g={};monthTx().forEach(t=>g[t.category]=(g[t.category]||0)+Number(t.amount));return Object.entries(g).sort((a,b)=>b[1]-a[1])}
+function render(){
+ const tx=monthTx(),spent=sum(tx),left=budget-spent;
+ $('totalSpent').textContent=money(spent);$('totalBudget').textContent=money(budget);$('remaining').textContent=money(left);$('remaining').style.color=left<0?'var(--red)':'var(--ink)';$('remainingFoot').textContent=left<0?'Over your monthly limit':'Available to spend';$('count').textContent=tx.length;
+ $('budgetInput').value=budget;$('budgetProgress').textContent=money(spent);$('budgetCaption').textContent=`of ${money(budget)} monthly budget`;const pct=Math.min(100,budget?spent/budget*100:0);$('budgetBar').style.width=pct+'%';$('budgetBar').style.background=spent>budget?'var(--red)':'var(--green)';
+ const cats=grouped();$('categories').innerHTML=cats.length?cats.slice(0,6).map(([n,v])=>`<div class="cat-row"><span>${esc(n)}</span><div class="track"><div class="fill" style="width:${spent?v/spent*100:0}%"></div></div><span class="cat-amount">${money(v)}</span></div>`).join(''):'<div class="empty">Add expenses to see your categories.</div>';
+ const days=Array.from({length:7},(_,i)=>{const d=new Date(today.getFullYear(),today.getMonth(),Math.max(1,today.getDate()-6+i));return {label:d.toLocaleDateString('en',{weekday:'short'}),value:sum(tx.filter(t=>t.date===d.toISOString().slice(0,10)))}});const max=Math.max(1,...days.map(x=>x.value));$('dailyChart').innerHTML=days.map((d,i)=>`<div class="bar-wrap"><div class="bar ${i===6?'current':''}" title="${money(d.value)}" style="height:${Math.max(2,d.value/max*100)}%"></div><span class="bar-label">${d.label}</span></div>`).join('');
+ const rows=arr=>arr.length?`<table class="table"><thead><tr><th>Expense</th><th>Category</th><th>Date</th><th style="text-align:right">Amount</th><th></th></tr></thead><tbody>${arr.map(t=>`<tr><td>${esc(t.description)}</td><td><span class="tag">${esc(t.category)}</span></td><td>${new Date(t.date+'T12:00:00').toLocaleDateString()}</td><td class="amount">${money(t.amount)}</td><td><button class="delete" aria-label="Delete ${esc(t.description)}" onclick="removeTx('${t.id}')">×</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No expenses yet. Add your first one above.</div>';
+ $('recent').innerHTML=rows([...tx].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5));$('allTransactions').innerHTML=rows([...transactions].sort((a,b)=>b.date.localeCompare(a.date)));
+ $('insights').innerHTML=makeInsights(tx,cats);
+ $('budgetCategories').innerHTML=cats.length?cats.map(([n,v])=>`<div class="budget-row"><div class="budget-top"><strong>${esc(n)}</strong><span>${money(v)}</span></div><div class="budget-track"><span style="width:${spent?v/spent*100:0}%"></span></div></div>`).join(''):'<div class="empty">Category insights will appear when you add expenses.</div>';
+}
+function makeInsights(tx,cats){if(!tx.length)return '<div class="insight"><strong>Your first insight starts here</strong><p>Add a few expenses and Spendwise will summarize your recorded spending.</p></div>';let out=[];if(cats[0])out.push(`<div class="insight"><strong>Your biggest category</strong><p>${esc(cats[0][0])} is your largest recorded category at ${money(cats[0][1])} (${Math.round(cats[0][1]/sum(tx)*100)}% of this month's entries).</p></div>`);let n=budget-sum(tx);out.push(`<div class="insight"><strong>Budget check</strong><p>${n>=0?`You have ${money(n)} left in your monthly budget.`:`You are ${money(-n)} over your monthly budget.`}</p></div>`);if(tx.length>=3){let avg=sum(tx)/tx.length;out.push(`<div class="insight"><strong>Average transaction</strong><p>Your average recorded expense is ${money(avg)} across ${tx.length} transactions.</p></div>`)}return out.join('')}
+function removeTx(id){transactions=transactions.filter(t=>t.id!==id);save()}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo(0,0)}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+$('today').textContent=today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+$('date').value=today.toISOString().slice(0,10);
+$('expenseForm').addEventListener('submit',e=>{e.preventDefault();const amount=Number($('amount').value);if(!(amount>0))return;transactions.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),description:$('description').value.trim(),amount,category:$('category').value,date:$('date').value});e.target.reset();$('date').value=today.toISOString().slice(0,10);save();showPage('transactions')});
+$('budgetForm').addEventListener('submit',e=>{e.preventDefault();const n=Number($('budgetInput').value);if(n>0){budget=n;save();showPage('budgets')}});
+$('clearAll').addEventListener('click',()=>{if(confirm('Delete all recorded expenses from this browser?')){transactions=[];save()}});
+function answer(q){const s=q.toLowerCase(),tx=monthTx(),cats=grouped(),spent=sum(tx);if(/most|biggest|highest|largest|category/.test(s)&&cats.length)return `Your largest recorded spending category this month is ${cats[0][0]} at ${money(cats[0][1])}. That's ${Math.round(cats[0][1]/spent*100)}% of your recorded spending.`;if(/left|remaining|budget/.test(s))return `You've recorded ${money(spent)} in spending against a ${money(budget)} monthly budget. ${budget-spent>=0?money(budget-spent)+' remains.':'You are '+money(spent-budget)+' over the limit.'}`;if(/total|spent|spending/.test(s))return `Your recorded spending this month totals ${money(spent)} across ${tx.length} transactions.`;if(/average/.test(s))return tx.length?`Your average recorded transaction is ${money(spent/tx.length)}.`:'Add some expenses first so I can calculate an average.';if(/save|saving|reduce|cut/.test(s))return cats.length?`Your largest category is ${cats[0][0]}. You could review those purchases and set a realistic limit. For example, a 10% reduction in that category would equal ${money(cats[0][1]*.1)} based on this month's entries.`:'Add expenses first, then I can help identify categories to review.';return 'I can currently answer questions about your total spending, largest category, average transaction and remaining budget. Try asking “Which category is highest?”';}
+$('askForm').addEventListener('submit',e=>{e.preventDefault();const q=$('question').value.trim();if(!q)return;const box=$('messages');box.insertAdjacentHTML('beforeend',`<div class="bubble user">${esc(q)}</div><div class="bubble">${esc(answer(q))}</div>`);$('question').value='';box.scrollTop=box.scrollHeight});
+render();
+</script>
+</body>
+</html>
