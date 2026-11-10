@@ -69,7 +69,7 @@
   </section>
   <section class="page" id="assistant">
     <div class="top"><div><div class="eyebrow">Understand your habits</div><h1 class="h1">Money assistant</h1><p class="sub">Ask questions about the expenses you've recorded.</p></div></div>
-    <div class="card assistant-box"><div class="messages" id="messages"><div class="bubble">Hi! I'm your AI Spending Analyst. Ask me to explain patterns in the expenses you've entered, compare categories, or suggest realistic ways to review your spending.</div></div><form class="ask" id="askForm"><input id="question" placeholder="Ask about your spending..." autocomplete="off" required><button class="btn">Ask</button></form><p class="notice">AI analysis uses only the expense entries currently stored in this browser. Do not enter bank details, card numbers, passwords, or other sensitive information. AI responses can be inaccurate and are educational, not professional financial advice.</p></div>
+    <div class="card assistant-box"><div class="messages" id="messages"><div class="bubble">Hi! I can help you explore the spending data you've entered. Try asking “Which category have I spent the most on?” or “How much budget do I have left?”</div></div><form class="ask" id="askForm"><input id="question" placeholder="Ask about your spending..." autocomplete="off" required><button class="btn">Ask</button></form><p class="notice">This first prototype uses transparent, local calculations and predefined question patterns. It does not send your financial data to an external AI model.</p></div>
   </section>
 </main>
 </div>
@@ -105,61 +105,8 @@ $('date').value=today.toISOString().slice(0,10);
 $('expenseForm').addEventListener('submit',e=>{e.preventDefault();const amount=Number($('amount').value);if(!(amount>0))return;transactions.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),description:$('description').value.trim(),amount,category:$('category').value,date:$('date').value});e.target.reset();$('date').value=today.toISOString().slice(0,10);save();showPage('transactions')});
 $('budgetForm').addEventListener('submit',e=>{e.preventDefault();const n=Number($('budgetInput').value);if(n>0){budget=n;save();showPage('budgets')}});
 $('clearAll').addEventListener('click',()=>{if(confirm('Delete all recorded expenses from this browser?')){transactions=[];save()}});
-
-// Set this to the HTTPS URL of your deployed Cloudflare Worker.
-// Never put your OpenAI API key in this file.
-const AI_ENDPOINT = "PASTE_YOUR_CLOUDFLARE_WORKER_URL_HERE";
-
-async function askSpendingAnalyst(question){
-  const tx = transactions.slice(-100).map(t => ({
-    description: String(t.description || "").slice(0,70),
-    category: String(t.category || "").slice(0,40),
-    amount: Number(t.amount),
-    date: String(t.date || "").slice(0,10)
-  })).filter(t => Number.isFinite(t.amount) && t.amount > 0);
-
-  const button = $('askForm').querySelector('button');
-  button.disabled = true;
-  button.textContent = 'Thinking…';
-
-  try {
-    if (!AI_ENDPOINT.startsWith('https://') || AI_ENDPOINT.includes('PASTE_')) {
-      throw new Error('The AI endpoint has not been configured yet. Add your Worker URL in index.html.');
-    }
-    const response = await fetch(AI_ENDPOINT, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        question: question.slice(0,500),
-        transactions: tx
-      })
-    });
-    const data = await response.json().catch(()=>({}));
-    if (!response.ok) throw new Error(data.error || 'The AI service could not respond. Please try again.');
-    return data.answer || 'I could not generate an analysis for that question. Please try again.';
-  } catch (err) {
-    return `I couldn't reach the AI analyst: ${err.message}`;
-  } finally {
-    button.disabled = false;
-    button.textContent = 'Ask';
-  }
-}
-
-$('askForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  const q=$('question').value.trim();
-  if(!q)return;
-  const box=$('messages');
-  box.insertAdjacentHTML('beforeend',`<div class="bubble user">${esc(q)}</div>`);
-  $('question').value='';
-  box.insertAdjacentHTML('beforeend','<div class="bubble" id="aiPending">Analysing your recorded expenses…</div>');
-  box.scrollTop=box.scrollHeight;
-  const answer = await askSpendingAnalyst(q);
-  const pending=$('aiPending');
-  if(pending){pending.textContent=answer;pending.removeAttribute('id');}
-  box.scrollTop=box.scrollHeight;
-});
-
+function answer(q){const s=q.toLowerCase(),tx=monthTx(),cats=grouped(),spent=sum(tx);if(/most|biggest|highest|largest|category/.test(s)&&cats.length)return `Your largest recorded spending category this month is ${cats[0][0]} at ${money(cats[0][1])}. That's ${Math.round(cats[0][1]/spent*100)}% of your recorded spending.`;if(/left|remaining|budget/.test(s))return `You've recorded ${money(spent)} in spending against a ${money(budget)} monthly budget. ${budget-spent>=0?money(budget-spent)+' remains.':'You are '+money(spent-budget)+' over the limit.'}`;if(/total|spent|spending/.test(s))return `Your recorded spending this month totals ${money(spent)} across ${tx.length} transactions.`;if(/average/.test(s))return tx.length?`Your average recorded transaction is ${money(spent/tx.length)}.`:'Add some expenses first so I can calculate an average.';if(/save|saving|reduce|cut/.test(s))return cats.length?`Your largest category is ${cats[0][0]}. You could review those purchases and set a realistic limit. For example, a 10% reduction in that category would equal ${money(cats[0][1]*.1)} based on this month's entries.`:'Add expenses first, then I can help identify categories to review.';return 'I can currently answer questions about your total spending, largest category, average transaction and remaining budget. Try asking “Which category is highest?”';}
+$('askForm').addEventListener('submit',e=>{e.preventDefault();const q=$('question').value.trim();if(!q)return;const box=$('messages');box.insertAdjacentHTML('beforeend',`<div class="bubble user">${esc(q)}</div><div class="bubble">${esc(answer(q))}</div>`);$('question').value='';box.scrollTop=box.scrollHeight});
 render();
 </script>
 </body>
